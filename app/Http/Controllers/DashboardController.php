@@ -15,6 +15,7 @@ class DashboardController extends Controller
         }
         return redirect(route('dashboard'));
     }
+
     public function dashboard(SubjectService $subjectService)
     {
         return view('dashboard');

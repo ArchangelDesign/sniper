@@ -21,7 +21,7 @@ class Subject
 
     /**
      * @var string
-     * @Column(type="string", length=255, nullable=false)
+     * @Column(type="string", length=255, nullable=false, unique=true)
      */
     protected $url;
 
@@ -50,10 +50,16 @@ class Subject
     protected $location;
 
     /**
-     * @var \DateTime|null
-     * @Column(type="datetime", nullable=true)
+     * @var string|null
+     * @Column(type="string", nullable=true)
      */
     protected $saleDate;
+
+    /**
+     * @var string|null
+     * @Column(type="string", length=20)
+     */
+    protected $saleDateTime;
 
     /**
      * @var int|null
@@ -83,7 +89,31 @@ class Subject
      * @var boolean|null
      * @Column(type="boolean", nullable=true)
      */
-    protected $ignore = false;
+    protected $ignore;
+
+    /**
+     * @var bool|null
+     * @Column(type="boolean", nullable=true)
+     */
+    protected $keysIncluded;
+
+    /**
+     * @var string|null
+     * @Column(type="string", nullable=true)
+     */
+    protected $primaryDamage;
+
+    /**
+     * @var string|null
+     * @Column(type="string", nullable=true, length=50)
+     */
+    protected $engineType;
+
+    /**
+     * @var string|null
+     * @Column(type="string", nullable=false, length=30)
+     */
+    protected $estimatedValue;
 
     /**
      * @return int
@@ -194,18 +224,18 @@ class Subject
     }
 
     /**
-     * @return \DateTime|null
+     * @return string|null
      */
-    public function getSaleDate(): ?\DateTime
+    public function getSaleDate(): ?string
     {
         return $this->saleDate;
     }
 
     /**
-     * @param \DateTime|null $saleDate
+     * @param string|null $saleDate
      * @return Subject
      */
-    public function setSaleDate(?\DateTime $saleDate): Subject
+    public function setSaleDate(?string $saleDate): Subject
     {
         $this->saleDate = $saleDate;
         return $this;
@@ -298,6 +328,96 @@ class Subject
     public function setIgnore(?bool $ignore): Subject
     {
         $this->ignore = $ignore;
+        return $this;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getKeysIncluded(): ?bool
+    {
+        return $this->keysIncluded;
+    }
+
+    /**
+     * @param bool|null $keysIncluded
+     * @return Subject
+     */
+    public function setKeysIncluded(?bool $keysIncluded): Subject
+    {
+        $this->keysIncluded = $keysIncluded;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPrimaryDamage(): ?string
+    {
+        return $this->primaryDamage;
+    }
+
+    /**
+     * @param string|null $primaryDamage
+     * @return Subject
+     */
+    public function setPrimaryDamage(?string $primaryDamage): Subject
+    {
+        $this->primaryDamage = $primaryDamage;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getEngineType(): ?string
+    {
+        return $this->engineType;
+    }
+
+    /**
+     * @param string|null $engineType
+     * @return Subject
+     */
+    public function setEngineType(?string $engineType): Subject
+    {
+        $this->engineType = $engineType;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getEstimatedValue(): ?string
+    {
+        return $this->estimatedValue;
+    }
+
+    /**
+     * @param string|null $estimatedValue
+     * @return Subject
+     */
+    public function setEstimatedValue(?string $estimatedValue): Subject
+    {
+        $this->estimatedValue = $estimatedValue;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSaleDateTime(): ?string
+    {
+        return $this->saleDateTime;
+    }
+
+    /**
+     * @param string|null $saleDateTime
+     * @return Subject
+     */
+    public function setSaleDateTime(?string $saleDateTime): Subject
+    {
+        $this->saleDateTime = $saleDateTime;
         return $this;
     }
 }

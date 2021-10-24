@@ -20,6 +20,8 @@ class RegisteredUserController extends Controller
      */
     public function create()
     {
+        if ($this->isRegistrationDisabled())
+            return redirect(route('login'));
         return view('auth.register');
     }
 
@@ -33,6 +35,8 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
+        if ($this->isRegistrationDisabled())
+            return redirect(route('login'));
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -50,5 +54,10 @@ class RegisteredUserController extends Controller
         Auth::login($user);
 
         return redirect(RouteServiceProvider::HOME);
+    }
+
+    private function isRegistrationDisabled(): bool
+    {
+        return isset($_ENV['SNIPER_REGISTRATION_DISABLED']);
     }
 }

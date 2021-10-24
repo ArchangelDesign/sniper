@@ -18,6 +18,8 @@ class DashboardController extends Controller
 
     public function dashboard(SubjectService $subjectService)
     {
-        return view('dashboard');
+        $data = [];
+        $data['subjects'] = $subjectService->fetchSubjects();
+        return view('dashboard', $data);
     }
 }

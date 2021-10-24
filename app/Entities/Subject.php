@@ -80,6 +80,12 @@ class Subject
     protected $currentBid;
 
     /**
+     * @var boolean|null
+     * @Column(type="boolean", nullable=true)
+     */
+    protected $ignore = false;
+
+    /**
      * @return int
      */
     public function getId(): int
@@ -277,4 +283,21 @@ class Subject
         return $this;
     }
 
+    /**
+     * @return bool|null
+     */
+    public function getIgnore(): ?bool
+    {
+        return $this->ignore;
+    }
+
+    /**
+     * @param bool|null $ignore
+     * @return Subject
+     */
+    public function setIgnore(?bool $ignore): Subject
+    {
+        $this->ignore = $ignore;
+        return $this;
+    }
 }

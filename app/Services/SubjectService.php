@@ -25,13 +25,14 @@ class SubjectService
             ->createQueryBuilder()
             ->select('s')
             ->from('\App\Entities\Subject', 's')
+            ->where('s.ignore = 0')
             ->getQuery()
             ->getResult();
     }
 
-    public function update(Subject $subject, $flush = true)
+    public function update($entity, $flush = true)
     {
-        $this->db->getEntityManager()->persist($subject);
+        $this->db->getEntityManager()->persist($entity);
         if ($flush)
             $this->db->getEntityManager()->flush();
     }

@@ -3,6 +3,7 @@
 namespace Tests\Browser;
 
 use App\Entities\Subject;
+use App\Entities\SubjectHistory;
 use App\Services\SubjectService;
 use Facebook\WebDriver\Remote\RemoteWebElement;
 use Facebook\WebDriver\WebDriverBy;
@@ -60,6 +61,7 @@ class CopartSyncTest extends DuskTestCase
         $browser->visit($this->getUri($subject));
         $onSale = $this->isSubjectOnSale($browser);
         Log::info($onSale ? 'ON SALE' : 'FUTURE LOT');
+        $previousBid = $subject->getCurrentBid();
         $subject
             ->setTitle($this->getSubjectTitle($browser))
             ->setIsBiddingOpen($onSale)
@@ -77,6 +79,11 @@ class CopartSyncTest extends DuskTestCase
                 ->setCurrentBid($this->getSubjectCurrentBid($browser));
         }
         Log::debug('updating...');
+        if (!is_null($previousBid) && $previousBid != $subject->getCurrentBid()) {
+            Log::info('bid changed ' . $previousBid . ' => ' . $subject->getCurrentBid());
+            $record = SubjectHistory::build($subject, $subject->getCurrentBid());
+            $this->subjectService->update($record);
+        }
         $this->subjectService->update($subject);
         Log::debug('done.');
     }

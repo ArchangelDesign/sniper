@@ -57,7 +57,7 @@ class Subject
 
     /**
      * @var string|null
-     * @Column(type="string", length=20)
+     * @Column(type="string", length=20, nullable=true)
      */
     protected $saleDateTime;
 
@@ -87,7 +87,7 @@ class Subject
 
     /**
      * @var boolean|null
-     * @Column(type="boolean", nullable=true)
+     * @Column(type="boolean", options={"default": 0})
      */
     protected $ignore;
 
@@ -111,7 +111,7 @@ class Subject
 
     /**
      * @var string|null
-     * @Column(type="string", nullable=false, length=30)
+     * @Column(type="string", nullable=true, length=30)
      */
     protected $estimatedValue;
 

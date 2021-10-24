@@ -116,6 +116,12 @@ class Subject
     protected $estimatedValue;
 
     /**
+     * @var string|null
+     * @Column(type="string", nullable=true)
+     */
+    protected $imageUrl;
+
+    /**
      * @return int
      */
     public function getId(): int
@@ -418,6 +424,24 @@ class Subject
     public function setSaleDateTime(?string $saleDateTime): Subject
     {
         $this->saleDateTime = $saleDateTime;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getImageUrl(): ?string
+    {
+        return $this->imageUrl;
+    }
+
+    /**
+     * @param string|null $imageUrl
+     * @return Subject
+     */
+    public function setImageUrl(?string $imageUrl): Subject
+    {
+        $this->imageUrl = $imageUrl;
         return $this;
     }
 }

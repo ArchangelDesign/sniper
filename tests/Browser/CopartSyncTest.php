@@ -67,6 +67,7 @@ class CopartSyncTest extends DuskTestCase
             ->setEngineType($this->getSubjectEngineType($browser))
             ->setEstimatedValue($this->getSubjectEstimatedValue($browser))
             ->setSaleDate($this->getSubjectSaleDateString($browser))
+            ->setImageUrl($this->getSubjectImageUrl($browser))
             ->setLastSync(new \DateTime());
         if ($onSale) {
             $subject
@@ -133,7 +134,7 @@ class CopartSyncTest extends DuskTestCase
      */
     private function getSubjectSaleDateString(Browser $browser)
     {
-        $browser->waitFor('span[data-uname="lotdetailSaleinformationsaledatevalue"]', 3);
+        $browser->waitFor('span[data-uname="lotdetailSaleinformationsaledatevalue"]', 10);
         $wrapSpan = $browser->element('span[data-uname="lotdetailSaleinformationsaledatevalue"]');
         if (is_null($wrapSpan))
             return null;
@@ -202,5 +203,10 @@ class CopartSyncTest extends DuskTestCase
         ];
 
         return $map[$month];
+    }
+
+    private function getSubjectImageUrl(Browser $browser)
+    {
+        return $browser->element('#show-img')->getAttribute('src');
     }
 }

@@ -59,9 +59,13 @@
                 </span>
                             @endif
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {{ $subject->getSaleDateTime() }}
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            @if($subject->getIsBiddingOpen())
+                                <div class="text-sm text-gray-900"><b>{{ (new DateTime($subject->getSaleDateTime()))->diff(new DateTime())->format('%d days %H:%I') }}</b></div>
+                            <div class="text-sm text-gray-500">{{ $subject->getSaleDateTime() }}</div>
+                            @endif
                         </td>
+
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                             <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a>
                         </td>

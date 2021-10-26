@@ -22,6 +22,8 @@ class CopartSyncTest extends DuskTestCase
     public function testCopartImporter()
     {
         Log::info('-- COPART --');
+        Log::info('time now: ' . date ('H:i:s'));
+        $startTime = time();
         /** @var SubjectService $subjectService */
         $subjectService = $this->app->make(SubjectService::class);
         $this->subjectService = $subjectService;
@@ -37,16 +39,19 @@ class CopartSyncTest extends DuskTestCase
             $baseUrl = 'https://' . substr($trimmed, 0, strpos($trimmed, '/'));
 //            Log::info('Base URL is ' . $baseUrl);
             $this->browse(function (Browser $browser) use($baseUrl, $subject) {
+                $browser->driver->manage()->window()->minimize();
                 $browser::$baseUrl = $baseUrl;
                 try {
                     $this->processSubjectPage($browser, $subject);
                 } catch (\Exception $e) {
                     Log::error($e->getMessage());
                     Log::error($e->getTraceAsString());
-                    throw $e;
+//                    throw $e;
                 }
             });
         }
+        $elapsed = time() - $startTime;
+        Log::info('Import finished in ' . $elapsed . 's');
         $this->assertTrue(true);
     }
 
@@ -58,6 +63,12 @@ class CopartSyncTest extends DuskTestCase
     private function processSubjectPage(Browser $browser, Subject $subject)
     {
         Log::info('processing : ' . (empty($subject->getTitle()) ? $subject->getUrl() : $subject->getTitle()) . ' ID: ' . $subject->getId());
+        if (!empty($subject->getSaleDateTime())) {
+            if (strtotime($subject->getSaleDateTime()) < time()) {
+                Log::info('Auction has ended with price $' . $subject->getCurrentBid());
+                return;
+            }
+        }
         $browser->visit($this->getUri($subject));
         $onSale = $this->isSubjectOnSale($browser);
         Log::info($onSale ? 'ON SALE' : 'FUTURE LOT');
@@ -96,7 +107,18 @@ class CopartSyncTest extends DuskTestCase
 
     private function getSubjectCurrentBid(Browser $browser): int
     {
-        $browser->waitFor('.bid-price', 3);
+        try {
+            $browser->waitFor('.bid-price', 3);
+        } catch (\Exception $e) {
+            Log::error('Cannot get subject price. Checking with xPath...');
+            $backup = $browser->driver->findElement(WebDriverBy::xpath('//*[@id="bid-information-id"]/div[1]/div/div[2]/div/div/div/div/div/div/div/div/div/div[2]/div[4]/span'));
+            if (is_null($backup)) {
+                Log::error('Cannot find price with xPath.');
+                return 0;
+            }
+            log::debug('price: ' . $backup->getText());
+            return $this->priceStringToInt($backup->getText());
+        }
         return $this->priceStringToInt($browser->element('.bid-price')->getText());
     }
 

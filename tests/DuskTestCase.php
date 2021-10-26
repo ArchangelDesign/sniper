@@ -31,11 +31,14 @@ abstract class DuskTestCase extends BaseTestCase
      */
     protected function driver()
     {
+        // https://chromium.googlesource.com/chromium/src/+/refs/heads/main/chrome/common/chrome_switches.cc
         $options = (new ChromeOptions)->addArguments(collect([
-            '--window-size=1920,1080',
+            '--window-size=1024,800',
+            '--incognito',
+            '--no-first-run',
+            '--disable-gpu',
         ])->unless($this->hasHeadlessDisabled(), function ($items) {
             return $items->merge([
-                '--disable-gpu',
                 '--headless',
             ]);
         })->all());

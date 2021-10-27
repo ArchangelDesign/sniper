@@ -1,7 +1,9 @@
 <?php
 
-const PERIOD = 60 * 10;
 const SHORT_PERIOD = 60;
+const LONG_PERIOD = 60 * 10;
+
+const PERIOD = LONG_PERIOD;
 
 $time = 1;
 

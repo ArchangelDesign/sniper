@@ -57,12 +57,23 @@
                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                   OPEN
                 </span>
+                            @elseif($subject->getFinished())
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                  SOLD
+                </span>
+                                @else
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                  FUTURE
+                </span>
                             @endif
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             @if($subject->getIsBiddingOpen())
                                 <div class="text-sm text-gray-900"><b>{{ (new DateTime($subject->getSaleDateTime()))->diff(new DateTime())->format('%d days %H:%I') }}</b></div>
                             <div class="text-sm text-gray-500">{{ $subject->getSaleDateTime() }}</div>
+                            @elseif($subject->getFinished())
+                                <div class="text-sm text-gray-900"><b>{{ (new DateTime($subject->getSaleDateTime()))->diff(new DateTime())->format('%d days ago') }}</b></div>
+                                <div class="text-sm text-gray-500">{{ $subject->getSaleDateTime() }}</div>
                             @endif
                         </td>
 

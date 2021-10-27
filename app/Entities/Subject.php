@@ -122,6 +122,12 @@ class Subject
     protected $imageUrl;
 
     /**
+     * @var bool|null
+     * @Column(type="boolean", nullable=true, options={"default": false})
+     */
+    protected $finished;
+
+    /**
      * @return int
      */
     public function getId(): int
@@ -442,6 +448,24 @@ class Subject
     public function setImageUrl(?string $imageUrl): Subject
     {
         $this->imageUrl = $imageUrl;
+        return $this;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getFinished(): ?bool
+    {
+        return $this->finished;
+    }
+
+    /**
+     * @param bool|null $finished
+     * @return Subject
+     */
+    public function setFinished(?bool $finished): Subject
+    {
+        $this->finished = $finished;
         return $this;
     }
 }

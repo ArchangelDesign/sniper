@@ -27,8 +27,9 @@ class CopartSyncTest extends DuskTestCase
         /** @var SubjectService $subjectService */
         $subjectService = $this->app->make(SubjectService::class);
         $this->subjectService = $subjectService;
-
-        foreach ($subjectService->fetchSubjects() as $subject) {
+        $subjects = $subjectService->fetchSubjects();
+        Log::info('processing ' . count($subjects) . ' subjects...');
+        foreach ($subjects as $subject) {
             if ($subject->getIgnore())
                 continue;
             if (!is_null($subject->getLastSync())) {
@@ -66,6 +67,10 @@ class CopartSyncTest extends DuskTestCase
         if (!empty($subject->getSaleDateTime())) {
             if (strtotime($subject->getSaleDateTime()) < time()) {
                 Log::info('Auction has ended with price $' . $subject->getCurrentBid());
+                $subject
+                    ->setFinished(true)
+                    ->setIsBiddingOpen(false);
+                $this->subjectService->update($subject);
                 return;
             }
         }

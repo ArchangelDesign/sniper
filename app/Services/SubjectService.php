@@ -19,13 +19,13 @@ class SubjectService
     /**
      * @return Subject[]
      */
-    public function fetchSubjects(): array
+    public function fetchSubjects(bool $includeClosed = false): array
     {
         return $this->db->getEntityManager()
             ->createQueryBuilder()
             ->select('s')
             ->from('\App\Entities\Subject', 's')
-            ->where('s.ignore = 0')
+            ->where('s.ignore = 0 ' . (!$includeClosed ? 'and s.finished = 0' : ''))
             ->getQuery()
             ->getResult();
     }

@@ -49,7 +49,11 @@
                             </div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900">Current bid: <b>{{ empty($subject->getCurrentBid()) ? 'no bids' : '$' . $subject->getCurrentBid() }}</b></div>
+                            @if($subject->getFinished())
+                                <div class="text-sm text-gray-900">Sold for: <b>{{ empty($subject->getCurrentBid()) ? 'no bids' : '$' . $subject->getCurrentBid() }} ({{$subject->getSellValuePercentageString()}}%)</b></div>
+                            @else
+                                <div class="text-sm text-gray-900">Current bid: <b>{{ empty($subject->getCurrentBid()) ? 'no bids' : '$' . $subject->getCurrentBid() }}</b></div>
+                            @endif
                             <div class="text-sm text-gray-500">Market value {{ $subject->getEstimatedValue() }}</div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">

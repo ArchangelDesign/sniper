@@ -468,4 +468,28 @@ class Subject
         $this->finished = $finished;
         return $this;
     }
+
+    public function getEstimatedValueAsFloat()
+    {
+        return intval((str_replace(['$', ' ', 'USD', '', ','], '', $this->getEstimatedValue())));
+    }
+
+    public function getSellValuePercentage()
+    {
+        if ($this->getIsBiddingOpen())
+            return 0;
+        if (!$this->getFinished())
+            return 0;
+        if (empty($this->getCurrentBid()))
+            return 0;
+        if (empty($this->getEstimatedValueAsFloat()))
+            return 0;
+
+        return (100 * $this->getCurrentBid()) / intval($this->getEstimatedValueAsFloat());
+    }
+
+    public function getSellValuePercentageString()
+    {
+        return number_format($this->getSellValuePercentage(), 2);
+    }
 }

@@ -128,6 +128,12 @@ class Subject
     protected $finished;
 
     /**
+     * @var SubjectHistory[]|null
+     * @OneToMany(targetEntity="\App\Entities\SubjectHistory", mappedBy="subject")
+     */
+    protected $history;
+
+    /**
      * @return int
      */
     public function getId(): int
@@ -491,5 +497,23 @@ class Subject
     public function getSellValuePercentageString()
     {
         return number_format($this->getSellValuePercentage(), 2);
+    }
+
+    /**
+     * @return SubjectHistory[]|null
+     */
+    public function getHistory()
+    {
+        return $this->history;
+    }
+
+    /**
+     * @param SubjectHistory[]|null $history
+     * @return Subject
+     */
+    public function setHistory($history): Subject
+    {
+        $this->history = $history;
+        return $this;
     }
 }

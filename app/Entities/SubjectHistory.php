@@ -33,7 +33,7 @@ class SubjectHistory
 
     /**
      * @var Subject
-     * @ManyToOne(targetEntity="\App\Entities\Subject")
+     * @ManyToOne(targetEntity="\App\Entities\Subject", inversedBy="history")
      * @JoinColumn(name="subject_id", referencedColumnName="id")
      */
     protected $subject;

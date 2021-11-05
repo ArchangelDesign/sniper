@@ -1,7 +1,8 @@
 <?php
 
+const ONE_HOUR = 60 * 60;
 const SHORT_PERIOD = 60;
-const LONG_PERIOD = 60 * 10;
+const LONG_PERIOD = ONE_HOUR;
 
 const PERIOD = LONG_PERIOD;
 

@@ -33,9 +33,13 @@
                             <div class="flex items-center">
                                 <div class="flex-shrink-0 h-10 w-10">
                                     @if(empty($subject->getImageUrl()))
-                                    <img class="h-10 w-10 rounded-full" src="https://www.copart.com/images/testImages/lot_NoPhoto.png" alt="">
+                                        <a href="{{$subject->getUrl()}}" target="_blank">
+                                            <img class="h-10 w-10 rounded-full" src="https://www.copart.com/images/testImages/lot_NoPhoto.png" alt="">
+                                        </a>
                                     @else
-                                    <img class="h-10 w-10 rounded-full" src="{{ $subject->getImageUrl() }}" alt="">
+                                        <a href="{{$subject->getUrl()}}" target="_blank">
+                                            <img class="h-10 w-10 rounded-full" src="{{ $subject->getImageUrl() }}" alt="">
+                                        </a>
                                     @endif
                                 </div>
                                 <div class="ml-4">
@@ -50,7 +54,7 @@
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             @if($subject->getFinished())
-                                <div class="text-sm text-gray-900">Sold for: <b>{{ empty($subject->getCurrentBid()) ? 'no bids' : '$' . $subject->getCurrentBid() }} ({{$subject->getSellValuePercentageString()}}%)</b></div>
+                                <div class="text-sm text-gray-900">Sold for: <b>{{ empty($subject->getCurrentBid()) ? 'no bids' : '$' . $subject->getCurrentBid() }} ({{$subject->getSellValuePercentageString()}}%)  {{count($subject->getHistory())}} bids</b></div>
                             @else
                                 <div class="text-sm text-gray-900">Current bid: <b>{{ empty($subject->getCurrentBid()) ? 'no bids' : '$' . $subject->getCurrentBid() }}</b></div>
                             @endif

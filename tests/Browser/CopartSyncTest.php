@@ -21,6 +21,7 @@ class CopartSyncTest extends DuskTestCase
 
     public function testCopartImporter()
     {
+        date_default_timezone_set('America/New_York');
         Log::info('-- COPART --');
         Log::info('time now: ' . date ('H:i:s'));
         $startTime = time();
@@ -64,16 +65,6 @@ class CopartSyncTest extends DuskTestCase
     private function processSubjectPage(Browser $browser, Subject $subject)
     {
         Log::info('processing : ' . (empty($subject->getTitle()) ? $subject->getUrl() : $subject->getTitle()) . ' ID: ' . $subject->getId());
-        if (!empty($subject->getSaleDateTime())) {
-            if (strtotime($subject->getSaleDateTime()) < time()) {
-                Log::info('Auction has ended with price $' . $subject->getCurrentBid());
-                $subject
-                    ->setFinished(true)
-                    ->setIsBiddingOpen(false);
-                $this->subjectService->update($subject);
-                return;
-            }
-        }
         $browser->visit($this->getUri($subject));
         $onSale = $this->isSubjectOnSale($browser);
         Log::info($onSale ? 'ON SALE' : 'FUTURE LOT');
@@ -99,6 +90,14 @@ class CopartSyncTest extends DuskTestCase
             Log::info('bid changed ' . $previousBid . ' => ' . $subject->getCurrentBid());
             $record = SubjectHistory::build($subject, $subject->getCurrentBid());
             $this->subjectService->update($record);
+        }
+        if (!empty($subject->getSaleDateTime())) {
+            if (strtotime($subject->getSaleDateTime()) < time()) {
+                Log::info('Auction has ended with price $' . $subject->getCurrentBid());
+                $subject
+                    ->setFinished(true)
+                    ->setIsBiddingOpen(false);
+            }
         }
         $this->subjectService->update($subject);
         Log::debug('done.');
